@@ -1,0 +1,47 @@
+.login-container{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img{
+    max-width: 150px;
+}
+
+.login-container form{
+    width:100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-container form img{
+    align-self: center;
+    margin-bottom: 20px;
+}
+
+.login-container form input{
+    border: 1px solid #ddd;
+    padding: 0 20px;
+    height: 48px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.login-container form input:hover{
+    color: #999
+}
+
+
+.login-container form button[type=submit]{
+    border: 0;
+    border-radius: 4px;
+    height: 48px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #DF4723;
+    color: #FFF;
+    cursor: pointer;
+}

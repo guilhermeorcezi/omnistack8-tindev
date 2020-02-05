@@ -5,7 +5,7 @@ module.exports = {
 	async index(req, res) {
 		const { user } = req.headers;
 
-		const loggedDev = Dev.findById(user);
+		const loggedDev = await Dev.findById(user);
 
 		const users = await Dev.find({
 			$and: [
@@ -19,26 +19,25 @@ module.exports = {
 	},
 
 	async store(req, res) {
-		const { username } = req.body;
+		const { user } = req.body;
 
-		const userExists = await Dev.findOne({ user: username });
+		const userExists = await Dev.findOne({ user });
 
 		if (userExists) {
-			return res.json({ userRegister: false });
+			return res.json(userExists);
 		}
-		const response = await axios.get(
-			`https://api.github.com/users/${username}`
-		);
+
+		const response = await axios.get(`https://api.github.com/users/${user}`);
 
 		const { name, bio, avatar_url: avatar } = response.data;
 
 		const dev = await Dev.create({
 			name,
-			user: username,
+			user,
 			bio,
 			avatar
 		});
 
-		return res.json({ dev, userRegister: true });
+		return res.json(dev);
 	}
 };
