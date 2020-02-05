@@ -5,13 +5,13 @@ const mongoose = require('mongoose');
 
 const server = express();
 
-mongoose.connect(
-	'mongodb+srv://guilhermeorcezi:guilhermeorcezi@guilherme-port-gioju.mongodb.net/tindev?retryWrites=true&w=majority',
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	}
-);
+require('dotenv').config();
+
+mongoose.connect(process.env.MONGO_URL, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useFindAndModify: true
+});
 
 server.use(cors());
 server.use(express.json());
