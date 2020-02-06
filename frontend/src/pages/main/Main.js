@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
 
 import api from '../../services/api';
 import logo from '../../assets/logo.png';
 import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
+import match from '../../assets/itsamatch.png';
 import './main.css';
 
 export default function Login() {
 	const [users, setUsers] = useState([]);
+	const [matchDev, setMatchDev] = useState(null);
 	let userid = localStorage.getItem('id');
 
 	useEffect(() => {
@@ -22,6 +25,17 @@ export default function Login() {
 		}
 
 		loadUsers();
+	}, [userid]);
+
+	useEffect(() => {
+		const socket = io('http://localhost:3333', {
+			query: { user: userid }
+		});
+
+		socket.on('match', (dev) => {
+			window.scrollTo(0, 0);
+			setMatchDev(dev);
+		});
 	}, [userid]);
 
 	async function handleLike(id) {
@@ -76,6 +90,19 @@ export default function Login() {
 				</ul>
 			) : (
 				<div className="empty">Acabou :(</div>
+			)}
+
+			{matchDev && (
+				<div className="match-container">
+					<img src={match} alt="It's a match!" />
+					<img className="avatar" src={matchDev.avatar} alt={matchDev.name} />
+					<strong>{matchDev.name}</strong>
+					<p>{matchDev.bio}</p>
+
+					<button type="button" onClick={() => setMatchDev(null)}>
+						FECHAR
+					</button>
+				</div>
 			)}
 		</div>
 	);

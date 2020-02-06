@@ -2,8 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 const mongoose = require('mongoose');
+const http = require('http');
+const { setupWebsocket } = require('./websocket');
 
-const server = express();
+const app = express();
+const server = http.Server(app);
+setupWebsocket(server);
 
 require('dotenv').config();
 
@@ -13,8 +17,8 @@ mongoose.connect(process.env.MONGO_URL, {
 	useFindAndModify: true
 });
 
-server.use(cors());
-server.use(express.json());
-server.use(routes);
+app.use(cors());
+app.use(express.json());
+app.use(routes);
 
 server.listen(3333);
